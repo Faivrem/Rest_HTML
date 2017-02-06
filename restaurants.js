@@ -33,7 +33,7 @@ var creation_html = function(data) {
       idDiv = obj[i].name;
       divTmp.setAttribute("id",idDiv);
       var img = ajoutImage(obj[i].icon);
-      var adresse = ajoutAdresse(obj[i].adr_address);
+      var adresse = ajoutAdresse(obj[i].adr_address,obj[i].name);
       divTmp.appendChild(img);
       divTmp.appendChild(adresse);
       document.getElementById("contenu").appendChild(divTmp);
@@ -48,15 +48,13 @@ var ajoutImage = function(src) {
   return img;
 }
 //Essayer de split l'adresse avec les </span>
-var ajoutAdresse = function(adr) {
-  var adresse = document.createElement(adr);
-  var t = document.createTextNode(adr);
-  adresse.appendChild(t);
-  return adresse;
+var ajoutAdresse = function(adr,id) {
+  //var adresse = document.createElement("p");
+  var divTmp = document.createElement("div");
+  divTmp.innerHTML = adr;
+  return divTmp;
 }
 
 
-var lancement =  function() {
   var d = extraction_donnees();
   creation_html(d);
-}
