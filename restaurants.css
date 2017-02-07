@@ -1,0 +1,42 @@
+.container-fluid {
+  width: 100%;
+  padding: 0px;
+  background: red;
+}
+
+.container-fluid .container-restaurants {
+  width: 60%;
+  padding: 0px;
+  background: #e8e8e8;
+  padding-top: 100px;
+}
+
+.container-fluid .container-restaurants .container-restaurant {
+  width: 40%;
+  padding: 0px;
+  background: yellow;
+  border: 1px solid black;
+  position: relative;
+  padding-top: 80px;
+  margin-right: 70px;
+  margin-bottom: 10%;
+}
+
+.container-fluid .container-restaurants .container-restaurant img {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: calc(50% - 100px / 2);
+  top: -33.33333px;
+  border: 2px solid black;
+  border-radius: 10%;
+}
+
+.container-fluid .container-restaurants .container-restaurant div {
+  margin: 10px;
+}
+
+.container-fluid .container-selected {
+  width: 20%;
+  background: green;
+}

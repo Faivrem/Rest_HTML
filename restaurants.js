@@ -17,7 +17,7 @@
 //<p id="adr"> </p>
 //<img id="icons" src="" alt="test">
 
-var extraction_donnees = function() {
+/*var extractionDonnees = function() {
   var d = [];
   $.getJSON('restaurants.json', function(data) {
     d.push(data);
@@ -25,7 +25,7 @@ var extraction_donnees = function() {
   return d;
 };
 
-var creation_html = function(data) {
+var creationHtml = function(data) {
   data.forEach(function(obj) {
     for(var i in obj) {
       var divTmp = document.createElement("div");
@@ -40,7 +40,49 @@ var creation_html = function(data) {
     }
 
   })
-};
+};*/
+
+var chargement = function() {
+  $.getJSON('restaurants.json', function(data) {
+    data.forEach(function(obj) {
+
+      var containerRestaurant = document.createElement("div");
+      containerRestaurant.className = "container-restaurant col-md-4";
+      //containerRestaurant.setAttribute("class","container-restaurant col-md-4");
+
+      var containerRestaurantSousDiv1 = document.createElement("div");
+
+      var img = document.createElement("img");
+      img.src = obj.icon;
+
+      var containerInformations = document.createElement("div");
+      containerInformations.setAttribute("id",obj.id);
+
+      var containerInformationsAdresse = document.createElement("div");
+      containerInformationsAdresse.innerHTML = obj.adr_address;
+
+      containerRestaurant.appendChild(containerRestaurantSousDiv1);
+      containerRestaurantSousDiv1.appendChild(img);
+      containerRestaurantSousDiv1.appendChild(containerInformations);
+      containerInformations.appendChild(containerInformationsAdresse);
+
+      var containerRestaurants = document.getElementsByClassName("container-restaurants col-md-8")[0];
+      //console.log(containerRestaurants);
+      containerRestaurants.appendChild(containerRestaurant);
+
+    })
+  })
+}
+/*<div>
+    <img src="https://goo.gl/Y5CqQG">
+    <div id="novotel-s">
+        <h1>Novotel Ottawa</h1>
+        <p>allo allo allo</p>
+    </div>
+</div>*/
+
+chargement();
+
 
 var ajoutImage = function(src) {
   var img = document.createElement("img");
@@ -54,7 +96,3 @@ var ajoutAdresse = function(adr,id) {
   divTmp.innerHTML = adr;
   return divTmp;
 }
-
-
-  var d = extraction_donnees();
-  creation_html(d);
