@@ -24,8 +24,29 @@ xmlHttp.onreadystatechange = function() {
 xmlHttp.open("GET", localhost, true);
 xmlHttp.send();*/
 
+$('.container-restaurant').click(function(){
+  //$('.container-selected').append(this.id);
+  $('.container-selected #title').text(db[this.id].name);
+  $('.container-selected #address').replaceWith(db[this.id].adr_address);
+  $('.container-selected #img').attr("src",db[this.id].icon);
+  $('.container-selected #tel').text(db[this.id].international_phone_number);
+  var sch;
+  db[this.id].opening_hours.weekday_text.forEach(function (i){
+    sch=i+sch;
+  })
+  $('.container-selected #schedule').text(sch);
+  if(db[this.id].opening_hours.open_now==true){
+    $('.container-selected #schedule').append("OUI");
+  }
+  else {
+    $('.container-selected #schedule').append("NON");
+  }
+
+
+});
 
 var chargement = function() {
+  var co=0;
     db.forEach(function(obj) {
         var containerRestaurant = document.createElement("div");
         containerRestaurant.className = "container-restaurant col-md-4";
@@ -35,9 +56,8 @@ var chargement = function() {
 
         var img = document.createElement("img");
         img.src = obj.icon;
-
         var containerInformations = document.createElement("div");
-        containerInformations.setAttribute("id", obj.id);
+        containerRestaurant.setAttribute("id",co);
 
         var containerInformationsAdresse = document.createElement("div");
         containerInformationsAdresse.innerHTML = obj.adr_address;
@@ -50,10 +70,11 @@ var chargement = function() {
         //var containerRestaurants = document.getElementsByClassName("container-restaurants col-md-8")[0];
         //var containerRestaurants = $(".container-restaurants col-md-8");
         //console.log(containerRestaurants);
-
+        co=co+1;
         $(".container-restaurants.col-md-8").append(containerRestaurant);
     })
 }
+chargement();
 
 /*<div>
     <img src="https://goo.gl/Y5CqQG">
@@ -62,5 +83,3 @@ var chargement = function() {
         <p>allo allo allo</p>
     </div>
 </div>*/
-
-chargement();

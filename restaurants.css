@@ -1,7 +1,7 @@
 .container-fluid {
   width: 100%;
   padding: 0px;
-  background: red;
+  background: rgb(145, 145, 145);
 }
 
 .container-fluid .container-restaurants {
@@ -37,6 +37,11 @@
 }
 
 .container-fluid .container-selected {
+  border-radius: 20px;
   width: 20%;
-  background: green;
+  color:rgb(43, 43, 43);
+  background: rgba(187, 221, 255, 0.51);
+  position: fixed;
+  right: 30px;
+  top: 5px;
 }
