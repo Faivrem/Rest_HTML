@@ -14,65 +14,47 @@
         });
     });
 });*/
-//<p id="adr"> </p>
-//<img id="icons" src="" alt="test">
 
-/*var extractionDonnees = function() {
-  var d = [];
-  $.getJSON('restaurants.json', function(data) {
-    d.push(data);
-  });
-  return d;
+/*var xmlHttp = new XMLHttpRequest();
+xmlHttp.onreadystatechange = function() {
+  if (this.readyState === 4 && this.status === 200) {
+    callback(JSON.parse(this.responseText));
+  }
 };
+xmlHttp.open("GET", localhost, true);
+xmlHttp.send();*/
 
-var creationHtml = function(data) {
-  data.forEach(function(obj) {
-    for(var i in obj) {
-      var divTmp = document.createElement("div");
-      var idDiv = document.createAttribute("id");
-      idDiv = obj[i].name;
-      divTmp.setAttribute("id",idDiv);
-      var img = ajoutImage(obj[i].icon);
-      var adresse = ajoutAdresse(obj[i].adr_address,obj[i].name);
-      divTmp.appendChild(img);
-      divTmp.appendChild(adresse);
-      document.getElementById("contenu").appendChild(divTmp);
-    }
-
-  })
-};*/
 
 var chargement = function() {
-  $.getJSON('restaurants.json', function(data) {
-    data.forEach(function(obj) {
+    db.forEach(function(obj) {
+        var containerRestaurant = document.createElement("div");
+        containerRestaurant.className = "container-restaurant col-md-4";
+        //containerRestaurant.setAttribute("class","container-restaurant col-md-4");
 
-      var containerRestaurant = document.createElement("div");
-      containerRestaurant.className = "container-restaurant col-md-4";
-      //containerRestaurant.setAttribute("class","container-restaurant col-md-4");
+        var containerRestaurantSousDiv1 = document.createElement("div");
 
-      var containerRestaurantSousDiv1 = document.createElement("div");
+        var img = document.createElement("img");
+        img.src = obj.icon;
 
-      var img = document.createElement("img");
-      img.src = obj.icon;
+        var containerInformations = document.createElement("div");
+        containerInformations.setAttribute("id", obj.id);
 
-      var containerInformations = document.createElement("div");
-      containerInformations.setAttribute("id",obj.id);
+        var containerInformationsAdresse = document.createElement("div");
+        containerInformationsAdresse.innerHTML = obj.adr_address;
 
-      var containerInformationsAdresse = document.createElement("div");
-      containerInformationsAdresse.innerHTML = obj.adr_address;
+        $(containerRestaurant).append(containerRestaurantSousDiv1);
+        $(containerRestaurantSousDiv1).append(img);
+        $(containerRestaurantSousDiv1).append(containerInformations);
+        $(containerInformations).append(containerInformationsAdresse);
 
-      containerRestaurant.appendChild(containerRestaurantSousDiv1);
-      containerRestaurantSousDiv1.appendChild(img);
-      containerRestaurantSousDiv1.appendChild(containerInformations);
-      containerInformations.appendChild(containerInformationsAdresse);
+        //var containerRestaurants = document.getElementsByClassName("container-restaurants col-md-8")[0];
+        //var containerRestaurants = $(".container-restaurants col-md-8");
+        //console.log(containerRestaurants);
 
-      var containerRestaurants = document.getElementsByClassName("container-restaurants col-md-8")[0];
-      //console.log(containerRestaurants);
-      containerRestaurants.appendChild(containerRestaurant);
-
+        $(".container-restaurants.col-md-8").append(containerRestaurant);
     })
-  })
 }
+
 /*<div>
     <img src="https://goo.gl/Y5CqQG">
     <div id="novotel-s">
@@ -82,17 +64,3 @@ var chargement = function() {
 </div>*/
 
 chargement();
-
-
-var ajoutImage = function(src) {
-  var img = document.createElement("img");
-  img.src = src;
-  return img;
-}
-//Essayer de split l'adresse avec les </span>
-var ajoutAdresse = function(adr,id) {
-  //var adresse = document.createElement("p");
-  var divTmp = document.createElement("div");
-  divTmp.innerHTML = adr;
-  return divTmp;
-}
