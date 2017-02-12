@@ -74,6 +74,9 @@ var search = function() {
             })
         })
     }
+
+    //Mettre id de pagination à 1
+    $(".pagination").attr("id",1);
 }
 
 var chargement = function() {
@@ -107,45 +110,49 @@ var hideAll = function () {
     $('.container-restaurant').each(function() {
         $(this).hide();
     })
-};
+}
 
-var creationNavBar = function() {
-    $(".pagination").attr("id",1);
-    var currentPage = 1;
-    var index;
-    var nombreElement = $('.container-restaurant.col-md-4').length;
-    var elementParPage = 4;
-    var nombreDePage = nombreElement/elementParPage;
+var creationNavBar = function(nombreDePage) {
+    $(".pagination").children().remove();
+    var id = $(".pagination").attr("id");
+    var currentPage = parseInt(id);
+    var nombreDeBoutton = currentPage+parseInt(3);
 
-    for(var i=0; i < nombreDePage; i++) {
+    //Faire les conditions pour que > ne s'affiche pas si on est sur derniere page
+    for(var i=currentPage; i < nombreDeBoutton; i++) {
         var btn = document.createElement("input");
         btn.setAttribute("type","button");
-        if (i == 0) {
-            var btnPrec = document.createElement("input");
-            btnPrec.setAttribute("type","button");
-            btnPrec.setAttribute("value","<");
-            btnPrec.setAttribute("onclick","changePage(this.value);");
-            $(".pagination").append(btnPrec);
+        if (i == currentPage) {
+            if(currentPage != 1) {
+                var btnPrec = document.createElement("input");
+                btnPrec.setAttribute("type","button");
+                btnPrec.setAttribute("value","<");
+                btnPrec.setAttribute("onclick","changePage(this.value);");
+                $(".pagination").append(btnPrec);
+            }
         }
-        btn.setAttribute("value",i+1);
+        btn.setAttribute("value",i);
         $(".pagination").append(btn);
         btn.setAttribute("onclick","changePage(this.value);");
-        if (i == nombreDePage-1) {
-            var btnSuiv = document.createElement("input");
-            btnSuiv.setAttribute("type","button");
-            btnSuiv.setAttribute("value",">");
-            btnSuiv.setAttribute("onclick","changePage(this.value);");
-            $(".pagination").append(btnSuiv);
+        if (i == nombreDeBoutton-parseInt(1)) {
+            if(i != nombreDePage-1 && i != nombreDePage-2 && i !=nombreDePage-3) {
+                var btnSuiv = document.createElement("input");
+                btnSuiv.setAttribute("type","button");
+                btnSuiv.setAttribute("value",">");
+                btnSuiv.setAttribute("onclick","changePage(this.value);");
+                $(".pagination").append(btnSuiv);
+            }
         }
     }
-
 }
 
 
 var changePage = function(numPage) {
     var nombreElement = $('.container-restaurant.col-md-4').length;
+    console.log("NB E = "+nombreElement);
     var elementParPage = 4;
     var nombreDePage = nombreElement/elementParPage;
+    console.log("NB Page = "+ nombreDePage);
     var currentPage = $(".pagination").attr("id");
     hideAll();
 
@@ -172,13 +179,11 @@ var changePage = function(numPage) {
         }
         else {
             if(numPage == ">") {
-                console.log("droite");
                 suiv = parseInt(currentPage) + parseInt(1);
                 changePage(suiv);
                 $(".pagination").attr("id",suiv);
             }
             if (numPage == "<") {
-                console.log("gauche");
                 changePage(currentPage-1);
                 $(".pagination").attr("id",currentPage-1);
             }
@@ -191,10 +196,8 @@ var changePage = function(numPage) {
             $('.container-restaurant').eq(i).show();
         }
     }
-
-
-
+    creationNavBar(nombreDePage);
 }
+
 $('.container-selected').hide();
-creationNavBar();
 changePage(1);
