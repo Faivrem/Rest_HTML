@@ -13,16 +13,33 @@
 
 <body>
     <div class="container-fluid">
-        <div class="navig"></div>
+        <div class="navig">
+        <h2 class="h2">
+          <input type="text" class="form-control" id="recherche" placeholder="Rechercher un restaurant">
+          <button type="button" class="btn btn-primary btn-lg" onclick="search()">Search</button>
+        </h2></div>
         <div class="row">
             <div class="container-restaurants col-md-8">
             </div>
             <div class="container-selected col-md-4">
-                <img id="img">
-                <h1 id="title"> Titre </h1>
-                <span id ="address"> Adresse </span><br>
-                <div id="schedule"></div>
-                <b>Téléphone</b> : <div id="tel"</div>
+                <img class="img">
+                <h1 class="title"> Titre </h1>
+                <span class ="address"> Adresse </span><br>
+                <div class="schedule"></div>
+                <b>Téléphone</b> : <div class="tel"></div>
+                <span><h3 class="h3">Reviews:</h3></span>
+                <div class="form-group">
+                  <div class="form-group">
+                      <label for="exampleInputName2">Pseudo</label>
+                      <input type="text" class="form-control" id="user" placeholder="Pseudo">
+                  </div>
+                  <label for="comment">Comment:</label>
+                  <textarea class="form-control" rows="3" id="comment"placeholder="Comment here!"></textarea>
+                   <button class="btn btn-primary" onclick="post();"> Post</button>
+                  </div>
+                <div class ="review">
+
+                </div>
 
             </div>
         </div>
