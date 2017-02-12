@@ -107,3 +107,7 @@
 .navig{
   width: 50%;
 }
+
+.pagination {
+    display: inline;
+}

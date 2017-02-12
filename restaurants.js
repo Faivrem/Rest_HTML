@@ -1,28 +1,4 @@
-/*$.getJSON("restaurants.json", function(data) {
-    console.log(data);
 
-    $("#adr").html(data[0].adr_address);
-    $var = document.getElementById('icons');
-    $var.src = data[0].icon;
-});*/
-
-/*$(function() {
-    $.getJSON('restaurants.json', function(data) {
-        $.each(data, function(index, d) {
-            $('#contenu').append('Adresse : ' + d.adr_address + '<br>');
-            $('#contenu').append('<img src=' + d.icon + '>');
-        });
-    });
-});*/
-
-/*var xmlHttp = new XMLHttpRequest();
-xmlHttp.onreadystatechange = function() {
-  if (this.readyState === 4 && this.status === 200) {
-    callback(JSON.parse(this.responseText));
-  }
-};
-xmlHttp.open("GET", localhost, true);
-xmlHttp.send();*/
 
 $('.container-restaurant').click(function() {
     $('.container-selected').show();
@@ -77,6 +53,7 @@ var post = function() {
 }
 
 var search = function() {
+    //creationNavBar();
     var text = $('#recherche').val();
     if (text != "") {
         var words = text.split(" ");
@@ -95,9 +72,6 @@ var search = function() {
                 }
                 console.log($(this).text());
             })
-
-
-
         })
     }
 }
@@ -124,21 +98,103 @@ var chargement = function() {
         $(containerRestaurantSousDiv1).append(img);
         $(containerRestaurantSousDiv1).append(containerInformations);
         $(containerInformations).append(containerInformationsAdresse);
-
-        //var containerRestaurants = document.getElementsByClassName("container-restaurants col-md-8")[0];
-        //var containerRestaurants = $(".container-restaurants col-md-8");
-        //console.log(containerRestaurants);
         co = co + 1;
         $(".container-restaurants.col-md-8").append(containerRestaurant);
     })
 }
-chargement();
-$('.container-selected').hide();
 
-/*<div>
-    <img src="https://goo.gl/Y5CqQG">
-    <div id="novotel-s">
-        <h1>Novotel Ottawa</h1>
-        <p>allo allo allo</p>
-    </div>
-</div>*/
+var hideAll = function () {
+    $('.container-restaurant').each(function() {
+        $(this).hide();
+    })
+};
+
+var creationNavBar = function() {
+    $(".pagination").attr("id",1);
+    var currentPage = 1;
+    var index;
+    var nombreElement = $('.container-restaurant.col-md-4').length;
+    var elementParPage = 4;
+    var nombreDePage = nombreElement/elementParPage;
+
+    for(var i=0; i < nombreDePage; i++) {
+        var btn = document.createElement("input");
+        btn.setAttribute("type","button");
+        if (i == 0) {
+            var btnPrec = document.createElement("input");
+            btnPrec.setAttribute("type","button");
+            btnPrec.setAttribute("value","<");
+            btnPrec.setAttribute("onclick","changePage(this.value);");
+            $(".pagination").append(btnPrec);
+        }
+        btn.setAttribute("value",i+1);
+        $(".pagination").append(btn);
+        btn.setAttribute("onclick","changePage(this.value);");
+        if (i == nombreDePage-1) {
+            var btnSuiv = document.createElement("input");
+            btnSuiv.setAttribute("type","button");
+            btnSuiv.setAttribute("value",">");
+            btnSuiv.setAttribute("onclick","changePage(this.value);");
+            $(".pagination").append(btnSuiv);
+        }
+    }
+
+}
+
+
+var changePage = function(numPage) {
+    var nombreElement = $('.container-restaurant.col-md-4').length;
+    var elementParPage = 4;
+    var nombreDePage = nombreElement/elementParPage;
+    var currentPage = $(".pagination").attr("id");
+    hideAll();
+
+
+    if(numPage == ">" || numPage =="<") {
+        if( (currentPage == nombreDePage) || (currentPage == 1) ) {
+            if(currentPage == 1 && numPage == ">" ) {
+                suiv = parseInt(currentPage) + parseInt(1);
+                changePage(suiv);
+                $(".pagination").attr("id",suiv);
+            }
+            if (currentPage == 1 && numPage == "<") {
+                alert("Impossible");
+                changePage(1);
+            }
+            if (currentPage == nombreDePage && numPage == ">") {
+                alert("Impossible");
+                changePage(nombreDePage);
+            }
+            if(currentPage == nombreDePage && numPage == "<") {
+                changePage(currentPage-1);
+                $(".pagination").attr("id",currentPage-1);
+            }
+        }
+        else {
+            if(numPage == ">") {
+                console.log("droite");
+                suiv = parseInt(currentPage) + parseInt(1);
+                changePage(suiv);
+                $(".pagination").attr("id",suiv);
+            }
+            if (numPage == "<") {
+                console.log("gauche");
+                changePage(currentPage-1);
+                $(".pagination").attr("id",currentPage-1);
+            }
+        }
+    }
+    else {
+        var premiereDivPage = (numPage-1)*elementParPage;
+        $(".pagination").attr("id",numPage);
+        for(var i=premiereDivPage; i < premiereDivPage+elementParPage; i++) {
+            $('.container-restaurant').eq(i).show();
+        }
+    }
+
+
+
+}
+$('.container-selected').hide();
+creationNavBar();
+changePage(1);
