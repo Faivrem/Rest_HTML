@@ -13,17 +13,15 @@
 
 <body>
     <div class="container-fluid">
-        <div class="navig">
-        <h2 class="h2">
-          <input type="text" class="form-control" id="recherche" placeholder="Rechercher un restaurant">
-          <button type="button" class="btn btn-primary btn-lg" onclick="search()">Search</button>
-        </h2>
+        <div class="search">
+            <input type="text" class="form-control" id="recherche" placeholder="Rechercher un restaurant">
+            <button type="button" class="btn btn-primary btn-md" onclick="search()">Search</button>
         </div>
 
         <div class="row">
-            <div class="container-restaurants col-md-8">
+            <div class="container-restaurants col-xs-11 col-sm-5 col-md-7">
             </div>
-            <div class="container-selected col-md-4">
+            <div class="container-selected col-xs-5 col-md-4">
                 <img class="img">
                 <h1 class="title"> Titre </h1>
                 <span class ="address"> Adresse </span><br>

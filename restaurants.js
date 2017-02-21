@@ -1,43 +1,42 @@
+// Fonction permettant de faire apparaitre les détails du restaurants
+var afficheInformations = function(id) {
+  $('.container-selected').show();
+  console.log(id);
+  //$('.container-selected').append(id);
+  $('.container-selected .title').text(db[id].name);
+  $('.container-selected .address').replaceWith(db[id].adr_address);
+  $('.container-selected .img').attr("src", db[id].icon);
+  $('.container-selected .tel').text(db[id].international_phone_number);
 
-
-$('.container-restaurant').click(function() {
-    $('.container-selected').show();
-    //$('.container-selected').append(this.id);
-    $('.container-selected .title').text(db[this.id].name);
-    $('.container-selected .address').replaceWith(db[this.id].adr_address);
-    $('.container-selected .img').attr("src", db[this.id].icon);
-    $('.container-selected .tel').text(db[this.id].international_phone_number);
-
-    //Schedule
-    var sch;
-    db[this.id].opening_hours.weekday_text.forEach(function(i) {
-        sch = i + sch;
-    })
-    $('.container-selected .schedule').text(sch);
-    if (db[this.id].opening_hours.open_now == true) {
-        $('.container-selected .schedule').append("OUI");
-    } else {
-        $('.container-selected .schedule').append("NON");
-    }
-    $('.container-selected .review').text('');
-    // Reviews
-    db[this.id].reviews.forEach(function(i) {
-        var com = $("<div></div>").addClass('Com');
-        com.addClass('bg-primary');
-        com.append('<img src="https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png" alt="..." class="img-rounded" height=30px>');
-        com.append("<b>" + i.author_name + "</b><br>");
-        for (var t = 1; t <= 5; t++) {
-            if (t < i.rating) {
-                com.append('★');
-            } else {
-                com.append('☆');
-            }
-        }
-        com.append("<br>" + i.text);
-        com.appendTo('.container-selected .review');
-    })
-
-});
+  //Schedule
+  var sch = "";
+  db[id].opening_hours.weekday_text.forEach(function(i) {
+      sch = sch + i +"<br>";
+  })
+  $('.container-selected .schedule').html(sch);
+  if (db[id].opening_hours.open_now == true) {
+      $('.container-selected .schedule').append("Open : oui");
+  } else {
+      $('.container-selected .schedule').append("Open : non");
+  }
+  $('.container-selected .review').text('');
+  // Reviews
+  db[id].reviews.forEach(function(i) {
+      var com = $("<div></div>").addClass('Com');
+      com.addClass('bg-primary');
+      com.append('<img src="https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png" alt="..." class="img-rounded" height=30px>');
+      com.append("<b>" + i.author_name + "</b><br>");
+      for (var t = 1; t <= 5; t++) {
+          if (t < i.rating) {
+              com.append('★');
+          } else {
+              com.append('☆');
+          }
+      }
+      com.append("<br>" + i.text);
+      com.appendTo('.container-selected .review');
+  })
+}
 
 var post = function() {
     var pseudo = $('#user').val();
@@ -52,9 +51,27 @@ var post = function() {
 
 }
 
+var updatePageAfterSearch = function(result) {
+  $(".container-restaurants").children().remove();
+  var co = 0;
+  result.forEach(function(div) {
+    $(".container-restaurants").append(div);
+    co = co + 1;
+  })
+  changePage(1);
+}
+
 var search = function() {
-    //creationNavBar();
+    var result = [];
+    var nombreDeResulat = 0;
     var text = $('#recherche').val();
+
+    //Recharge la page avant de rechercher
+    $(".container-restaurants").children().remove();
+    chargement();
+    $(".pagination").attr("id",1);
+    changePage(1);
+
     if (text != "") {
         var words = text.split(" ");
 
@@ -67,16 +84,17 @@ var search = function() {
             $('.name').each(function() {
                 if ($(this).text().match(regex)) {
                     console.log("match");
+                    nombreDeResulat++;
                     var div = $(this).parent().parent().parent();
-                    div.show();
+                    //div.show();
+                    result.push(div);
                 }
-                console.log($(this).text());
             })
         })
+        console.log(result);
+        $(".pagination").attr("id",1);
+        updatePageAfterSearch(result);
     }
-
-    //Mettre id de pagination à 1
-    $(".pagination").attr("id",1);
 }
 
 var chargement = function() {
@@ -85,14 +103,12 @@ var chargement = function() {
         var containerRestaurant = document.createElement("div");
         containerRestaurant.className = "container-restaurant col-md-4";
         //containerRestaurant.setAttribute("class","container-restaurant col-md-4");
-
         var containerRestaurantSousDiv1 = document.createElement("div");
-
         var img = document.createElement("img");
         img.src = obj.icon;
         var containerInformations = document.createElement("div");
         containerRestaurant.setAttribute("id", co);
-
+        containerRestaurant.setAttribute("onclick","afficheInformations(id);");
         var containerInformationsAdresse = document.createElement("div");
         containerInformationsAdresse.innerHTML = obj.name;
         containerInformationsAdresse.setAttribute("class", "name");
@@ -102,7 +118,7 @@ var chargement = function() {
         $(containerRestaurantSousDiv1).append(containerInformations);
         $(containerInformations).append(containerInformationsAdresse);
         co = co + 1;
-        $(".container-restaurants.col-md-8").append(containerRestaurant);
+        $(".container-restaurants").append(containerRestaurant);
     })
 }
 
@@ -112,20 +128,58 @@ var hideAll = function () {
     })
 }
 
+var creerBoutonPagination = function(value) {
+  var btn = document.createElement("input");
+  btn.setAttribute("type","button");
+  btn.setAttribute("class","btn btn-default");
+  btn.setAttribute("value",value);
+  btn.setAttribute("onclick","changePage(this.value);");
+  $(".pagination").append(btn);
+}
+
 var creationNavBar = function(nombreDePage) {
+  $(".pagination").children().remove();
+  var id = $(".pagination").attr("id");
+  var currentPage = parseInt(id);
+  var nombreDeBoutons = 3;
+  var valeurDernierBouton = currentPage + nombreDeBoutons;
+
+  for(var i = currentPage; i < valeurDernierBouton; i++) {
+    if(i == currentPage) {
+      if(i != 1) {
+        creerBoutonPagination("<");
+      }
+    }
+    if(i <= nombreDePage) {
+      creerBoutonPagination(i);
+    }
+    if(i == valeurDernierBouton-1) {
+      if(valeurDernierBouton <= nombreDePage) {
+        creerBoutonPagination(">");
+      }
+    }
+  }
+}
+
+/*var creationNavBar = function(nombreDePage) {
     $(".pagination").children().remove();
     var id = $(".pagination").attr("id");
     var currentPage = parseInt(id);
     var nombreDeBoutton = currentPage+parseInt(3);
 
-    //Faire les conditions pour que > ne s'affiche pas si on est sur derniere page
+    if(nombreDePage < 3) {
+      nombreDeBoutton = nombreDePage;
+    }
+
     for(var i=currentPage; i < nombreDeBoutton; i++) {
         var btn = document.createElement("input");
         btn.setAttribute("type","button");
+        btn.setAttribute("class","btn btn-default");
         if (i == currentPage) {
             if(currentPage != 1) {
                 var btnPrec = document.createElement("input");
                 btnPrec.setAttribute("type","button");
+                btnPrec.setAttribute("class","btn btn-default");
                 btnPrec.setAttribute("value","<");
                 btnPrec.setAttribute("onclick","changePage(this.value);");
                 $(".pagination").append(btnPrec);
@@ -138,24 +192,28 @@ var creationNavBar = function(nombreDePage) {
             if(i != nombreDePage-1 && i != nombreDePage-2 && i !=nombreDePage-3) {
                 var btnSuiv = document.createElement("input");
                 btnSuiv.setAttribute("type","button");
+                btnSuiv.setAttribute("class","btn btn-default");
                 btnSuiv.setAttribute("value",">");
                 btnSuiv.setAttribute("onclick","changePage(this.value);");
                 $(".pagination").append(btnSuiv);
             }
         }
     }
-}
+}*/
 
 
 var changePage = function(numPage) {
-    var nombreElement = $('.container-restaurant.col-md-4').length;
-    console.log("NB E = "+nombreElement);
+    var nombreElement = $('.container-restaurant').length;
     var elementParPage = 4;
-    var nombreDePage = nombreElement/elementParPage;
-    console.log("NB Page = "+ nombreDePage);
+    var nombreDePage = Math.trunc(nombreElement/elementParPage);
+    var reste = nombreElement%elementParPage;
     var currentPage = $(".pagination").attr("id");
-    hideAll();
 
+    if (reste > 0) {
+      nombreDePage++;
+    }
+
+    hideAll();
 
     if(numPage == ">" || numPage =="<") {
         if( (currentPage == nombreDePage) || (currentPage == 1) ) {
