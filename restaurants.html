@@ -2,52 +2,62 @@
 <html>
 
 <head>
-    <title>Liste des restaurants</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="restaurants.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
-    <script src="db.js" type="text/javascript"></script>
-    <script src="restaurants.js" type="text/javascript"></script>
+  <title>Liste des restaurants</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="restaurants.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+  <script src="db.js" type="text/javascript"></script>
+  <script src="restaurants.js" type="text/javascript"></script>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="search">
-            <input type="text" class="form-control" id="recherche" placeholder="Rechercher un restaurant">
-            <button type="button" class="btn btn-primary btn-md" onclick="search()">Search</button>
-        </div>
+  <div class="container-fluid">
 
-        <div class="row">
-            <div class="container-restaurants col-xs-11 col-sm-5 col-md-7">
-            </div>
-            <div class="container-selected col-xs-5 col-md-4">
-                <img class="img">
-                <h1 class="title"> Titre </h1>
-                <span class ="address"> Adresse </span><br>
-                <div class="schedule"></div>
-                <b>Téléphone</b> : <div class="tel"></div>
-                <span><h3 class="h3">Reviews:</h3></span>
-                <div class="form-group">
-                  <div class="form-group">
-                      <label for="exampleInputName2">Pseudo</label>
-                      <input type="text" class="form-control" id="user" placeholder="Pseudo">
-                  </div>
-                  <label for="comment">Comment:</label>
-                  <textarea class="form-control" rows="3" id="comment"placeholder="Comment here!"></textarea>
-                   <button class="btn btn-primary" onclick="post();"> Post</button>
-                  </div>
-                <div class ="review">
-
-                </div>
-
-            </div>
-        </div>
-        <div class="pagination" id=1></div>
+    <div class="search">
+      <input type="text" class="form-control" id="recherche" placeholder="Rechercher un restaurant">
+      <button type="button" class="btn btn-primary btn-md" onclick="search()">Search</button>
     </div>
-<script>
-chargement();
- </script>
-<script src="restaurants.js" type="text/javascript"></script>
+
+    <div class="row">
+      <div class="container-restaurants col-sm-5 col-md-7"></div>
+      <div class="container-selected col-sm-5 col-md-4">
+        <img class="img">
+        <h3 class="title"> Titre </h3>
+        <p><span class="address"> Adresse </span></p>
+        <table class="schedule"></table><br>
+        <p><span class="ouverture"></span></p>
+        <p>
+          <div class="tel"></div>
+        </p>
+        <div class="links">
+          <p> Site web :
+            <a class="website" href="#" target="_blank"></a>
+          </p>
+          <p> Google maps :
+            <a class="googlemaps" href="#" target="_blank"></a>
+          </p>
+        </div>
+        <span><h3 class="h3">Reviews:</h3></span>
+        <div class="form-group">
+          <div class="form-group">
+            <label for="exampleInputName2">Pseudo</label>
+            <input type="text" class="form-control" id="user" placeholder="Pseudo">
+          </div>
+          <label for="comment">Comment:</label>
+          <textarea class="form-control" rows="3" id="comment" placeholder="Comment here!"></textarea>
+          <button class="btn btn-primary" onclick="post();"> Post</button>
+        </div>
+        <div class="review"></div>
+
+      </div>
+    </div>
+    <div class="pagination" id=1></div>
+  </div>
+  <script>
+    chargement();
+  </script>
+  <script src="restaurants.js" type="text/javascript"></script>
 </body>
+
 </html>
