@@ -23,7 +23,7 @@ var chargement = function() {
   })
 }
 
-// Fonction permettant de faire apparaitre les détails du restaurants
+// Fonction permettant de faire apparaitre les détails du restaurants quand on clique sur un restaurant
 var afficheInformations = function(id) {
   $('.container-selected').show();
   //$('.container-selected').append(id);
@@ -84,6 +84,7 @@ var post = function() {
   div.prependTo('.container-selected .review');
 }
 
+//Refait la page avec le resultat d'une recherche
 var updatePageAfterSearch = function(result) {
   $(".container-restaurants").children().remove();
   var co = 0;
@@ -94,6 +95,7 @@ var updatePageAfterSearch = function(result) {
   changePage(1);
 }
 
+//Fonction pour rechercher un restaurant avec son nom
 var search = function() {
   var result = [];
   var nombreDeResulat = 0;
@@ -119,7 +121,6 @@ var search = function() {
           console.log("match");
           nombreDeResulat++;
           var div = $(this).parent().parent().parent();
-          //div.show();
           result.push(div);
         }
       })
@@ -130,10 +131,10 @@ var search = function() {
 }
 
 /*
-Fonctions suivante sont pour la pagination
+Fonctions suivantes sont pour la pagination
 hideAll() : Cache tous les restaurants sur la page
-creationNavBar : Creer les différents boutons des pages
-changePage : Permet de changer de page 
+creationNavBar() : Creer les différents boutons des pages
+changePage() : Permet de changer de page
 */
 
 var hideAll = function() {
@@ -227,7 +228,3 @@ var changePage = function(numPage) {
   }
   creationNavBar(nombreDePage);
 }
-
-//Au démarrage ce qui se lance aussi
-$('.container-selected').hide();
-changePage(1);

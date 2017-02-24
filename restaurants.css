@@ -65,7 +65,7 @@
   transform: translateY(5px);
 }
 
-.container-fluid .container-restaurants .container-restaurant img {
+.container-restaurant img {
   width: 100px;
   height: 100px;
   position: absolute;
